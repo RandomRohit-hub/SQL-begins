@@ -1,113 +1,141 @@
-# SQL Begins: Database & Query Starter Kit
+# 🗄️ SQL Begins: Comprehensive SQL Learning & Quick-Recall Hub
 
-Welcome to **SQL Begins**! This repository serves as a structured starter kit for learning and practicing core SQL concepts, ranging from Database Design (DDL) and Data Manipulation (DML) to Transaction Control (TCL).
+A clean, modular repository designed for learning, practicing, and quickly recalling foundational to intermediate SQL concepts.
 
 ---
 
-## 📂 Project Structure
+## 🗺️ Repository Structure at a Glance
 
-The codebase has been refactored into modular directories to separate concerns and ensure a logical execution flow:
+The codebase is organized chronologically by standard SQL categories so you can execute them step-by-step or jump straight to any topic for quick reference:
 
 ```text
 SQL-begins/
-├── schema/             # Data Definition Language (DDL) scripts
-│   ├── 01_create_startersql_database.sql
-│   ├── 02_create_addresses_table.sql
-│   └── 03_create_rohitsql_database.sql
-├── data/               # Data Manipulation Language (DML) insert scripts
+├── 01_ddl_schema/              # Data Definition Language (Databases & Tables)
+│   ├── 01_create_databases.sql
+│   ├── 02_create_tables.sql
+│   └── 03_alter_tables.sql
+│
+├── 02_constraints/             # Database Integrity & Business Rules
+│   └── 01_constraints_overview.sql
+│
+├── 03_dml_seed_data/           # Sample Data (Users & Relational Addresses)
 │   ├── 01_insert_users.sql
 │   └── 02_insert_addresses.sql
-└── queries/            # Querying (DQL), Updates (DML), and Transactions (TCL)
-    ├── 01_select_queries.sql
-    ├── 02_update_queries.sql
-    └── 03_transaction_rollback.sql
+│
+├── 04_dql_queries/             # Data Query Language (SELECT, Filter, Sort)
+│   ├── 01_basic_select.sql
+│   └── 02_filtering_and_sorting.sql
+│
+├── 05_dml_crud_operations/     # Data Manipulation Language (UPDATE & DELETE)
+│   ├── 01_update_records.sql
+│   └── 02_delete_records.sql
+│
+├── 06_built_in_functions/      # Built-in SQL Functions (Aggregates & Strings)
+│   ├── 01_aggregate_functions.sql
+│   └── 02_scalar_string_functions.sql
+│
+└── 07_tcl_transactions/        # Transaction Control Language (ACID & Rollback)
+    └── 01_transaction_control.sql
 ```
 
 ---
 
-## 🛠️ Database Schema & Entities
+## ⚡ Quick-Recall SQL Cheatsheet
 
-The repository sets up two databases for practice:
+Use this section as a quick reference when you need to recall SQL syntax fast:
+
+| Concept | Command / Syntax Example | File Reference |
+| :--- | :--- | :--- |
+| **Create DB** | `CREATE DATABASE IF NOT EXISTS startersql;` | [`01_ddl_schema/01_create_databases.sql`](01_ddl_schema/01_create_databases.sql) |
+| **Create Table** | `CREATE TABLE users (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(100));` | [`01_ddl_schema/02_create_tables.sql`](01_ddl_schema/02_create_tables.sql) |
+| **Alter Table** | `ALTER TABLE users ADD COLUMN is_active BOOLEAN DEFAULT TRUE;` | [`01_ddl_schema/03_alter_tables.sql`](01_ddl_schema/03_alter_tables.sql) |
+| **Check Rule** | `ALTER TABLE users ADD CONSTRAINT chk CHECK (salary >= 0);` | [`02_constraints/01_constraints_overview.sql`](02_constraints/01_constraints_overview.sql) |
+| **Foreign Key** | `FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;` | [`02_constraints/01_constraints_overview.sql`](02_constraints/01_constraints_overview.sql) |
+| **Insert** | `INSERT INTO users (name, email) VALUES ('Riya', 'riya@mail.com');` | [`03_dml_seed_data/01_insert_users.sql`](03_dml_seed_data/01_insert_users.sql) |
+| **Select & Alias**| `SELECT name AS user_name, (salary * 12) AS annual FROM users;` | [`04_dql_queries/01_basic_select.sql`](04_dql_queries/01_basic_select.sql) |
+| **Filter & Sort**| `SELECT * FROM users WHERE salary > 50000 ORDER BY salary DESC LIMIT 5;` | [`04_dql_queries/02_filtering_and_sorting.sql`](04_dql_queries/02_filtering_and_sorting.sql) |
+| **Update** | `UPDATE users SET salary = salary + 5000 WHERE salary < 40000;` | [`05_dml_crud_operations/01_update_records.sql`](05_dml_crud_operations/01_update_records.sql) |
+| **Delete** | `DELETE FROM users WHERE gender = 'Other';` | [`05_dml_crud_operations/02_delete_records.sql`](05_dml_crud_operations/02_delete_records.sql) |
+| **Aggregates** | `COUNT(*)`, `SUM(salary)`, `AVG(salary)`, `MIN(salary)`, `MAX(salary)` | [`06_built_in_functions/01_aggregate_functions.sql`](06_built_in_functions/01_aggregate_functions.sql) |
+| **Group By** | `SELECT gender, COUNT(*) FROM users GROUP BY gender HAVING COUNT(*) > 5;` | [`06_built_in_functions/01_aggregate_functions.sql`](06_built_in_functions/01_aggregate_functions.sql) |
+| **String Funcs** | `LOWER(name)`, `UPPER(name)`, `CONCAT(first, '_', last)`, `LENGTH(name)` | [`06_built_in_functions/02_scalar_string_functions.sql`](06_built_in_functions/02_scalar_string_functions.sql) |
+| **Transactions** | `START TRANSACTION;` &rarr; `UPDATE ...` &rarr; `ROLLBACK;` (or `COMMIT;`) | [`07_tcl_transactions/01_transaction_control.sql`](07_tcl_transactions/01_transaction_control.sql) |
+
+---
+
+## 📊 Database Schema Overview
 
 ### 1. `startersql` Database (Primary)
 
-#### 🔹 `users` Table
-Stores basic information about the users.
-* `id` (INT, Primary Key, Auto-increment)
-* `name` (VARCHAR(100), Not Null)
-* `email` (VARCHAR(100), Unique, Not Null)
-* `gender` (ENUM: 'Male', 'Female', 'Other')
-* `date_of_birth` (DATE)
-* `salary` (DECIMAL(10,2))
-* `created_at` (TIMESTAMP, Default Current)
+```mermaid
+erDiagram
+    USERS ||--o{ ADDRESSES : "has"
+    USERS {
+        int id PK "AUTO_INCREMENT"
+        string name "NOT NULL"
+        string email UK "UNIQUE, NOT NULL"
+        enum gender "Male, Female, Other"
+        date date_of_birth
+        decimal salary "10,2"
+        boolean is_active "DEFAULT TRUE"
+        timestamp created_at "DEFAULT CURRENT_TIMESTAMP"
+    }
+    ADDRESSES {
+        int id PK "AUTO_INCREMENT"
+        int user_id FK "REFERENCES users(id) ON DELETE CASCADE"
+        string street
+        string city "INDEXED"
+        string state
+        string pincode
+    }
+```
 
-#### 🔹 `addresses` Table
-Stores physical addresses linked to users with transactional cascade controls.
-* `id` (INT, Primary Key, Auto-increment)
-* `user_id` (INT, Foreign Key referencing `users(id)` ON DELETE CASCADE)
-* `street` (VARCHAR(255))
-* `city` (VARCHAR(100))
-* `state` (VARCHAR(100))
-* `pincode` (VARCHAR(10))
+### 2. `Rohitsql` Database (Secondary Sandbox)
+* **`usersDB`**: Lightweight isolated playground table for experimenting with basic types without impacting the primary database.
 
 ---
 
-### 2. `Rohitsql` Database (Secondary)
+## 🚀 Execution Guide (Run in Terminal / MySQL Client)
 
-#### 🔹 `usersDB` Table
-A sandbox user database demonstrating fundamental field types.
-* `id` (INT, Primary Key, Auto-increment)
-* `name` (VARCHAR(100), Not Null)
-* `email` (VARCHAR(100), Unique, Not Null)
-* `gender` (ENUM: 'Male', 'Female', 'Other')
-* `date_of_birth` (DATE)
-* `created_at` (TIMESTAMP)
+Execute the scripts in order to build the database, seed mock records, and test queries:
 
----
-
-## 🚀 Execution Guide
-
-Follow this sequence to set up the databases, populate them with starter data, and run tests:
-
-### Step 1: Database & Table Creation
-Run the scripts inside the `schema/` directory to create the databases and structures:
 ```sql
--- Create main database and users table
-SOURCE schema/01_create_startersql_database.sql;
+-- Step 1: Initialize Database & Schema
+SOURCE 01_ddl_schema/01_create_databases.sql;
+SOURCE 01_ddl_schema/02_create_tables.sql;
+SOURCE 01_ddl_schema/03_alter_tables.sql;
 
--- Create relational addresses table linked to users
-SOURCE schema/02_create_addresses_table.sql;
+-- Step 2: Apply Business Integrity Rules & Constraints
+SOURCE 02_constraints/01_constraints_overview.sql;
 
--- Create sandbox Rohitsql database
-SOURCE schema/03_create_rohitsql_database.sql;
-```
+-- Step 3: Seed Realistic Data (30 Users & 25 Addresses)
+SOURCE 03_dml_seed_data/01_insert_users.sql;
+SOURCE 03_dml_seed_data/02_insert_addresses.sql;
 
-### Step 2: Seed Starter Data
-Populate the tables with sample records:
-```sql
--- Seed users table
-SOURCE data/01_insert_users.sql;
+-- Step 4: Run Queries & Practice Filtering
+SOURCE 04_dql_queries/01_basic_select.sql;
+SOURCE 04_dql_queries/02_filtering_and_sorting.sql;
 
--- Seed addresses table with user coordinates
-SOURCE data/02_insert_addresses.sql;
-```
+-- Step 5: Test Updates and Cascade Deletes
+SOURCE 05_dml_crud_operations/01_update_records.sql;
+SOURCE 05_dml_crud_operations/02_delete_records.sql;
 
-### Step 3: Run Queries & Transactions
-Explore search filters, data updates, and rollback mechanism tests:
-```sql
--- Perform select, filter, sorting, and pagination tests
-SOURCE queries/01_select_queries.sql;
+-- Step 6: Practice Built-in Functions (Aggregates & Strings)
+SOURCE 06_built_in_functions/01_aggregate_functions.sql;
+SOURCE 06_built_in_functions/02_scalar_string_functions.sql;
 
--- Perform single and batch update operations
-SOURCE queries/02_update_queries.sql;
-
--- Test safe transactional updates and rollbacks
-SOURCE queries/03_transaction_rollback.sql;
+-- Step 7: Test Transaction Isolation (COMMIT & ROLLBACK)
+SOURCE 07_tcl_transactions/01_transaction_control.sql;
 ```
 
 ---
 
-## 📝 SQL Best Practices Demonstrated
-* **Relational Integrity:** Cascading deletes (`ON DELETE CASCADE`) are used to automatically remove dependent child table records when parent records are deleted.
-* **Transaction Safety:** Demonstrates using `SET autocommit = 0` and `ROLLBACK` for safe transaction rollback procedures.
-* **Data Constraints:** Utilizes `UNIQUE`, `NOT NULL`, and `ENUM` values to maintain data cleanliness at the database engine level.
+## 💡 Important Rules to Remember
+
+1. **Always Use `WHERE` on `DELETE` and `UPDATE`:** Unscoped `DELETE` or `UPDATE` statements will impact every row in the table.
+2. **`DELETE` vs `TRUNCATE` vs `DROP`:**
+   - `DELETE`: DML row-by-row operation; rollbackable inside a transaction.
+   - `TRUNCATE`: DDL table wipe; resets auto-increment counter; cannot be rolled back in MySQL.
+   - `DROP`: Destroys table definition, structure, indexes, and records completely.
+3. **Foreign Keys with `ON DELETE CASCADE`:** Deleting a user automatically removes their corresponding address records, preserving relational integrity without orphan rows.
+4. **Transactions for Safety:** Use `SET autocommit = 0;` or `START TRANSACTION;` to test risky batch operations before confirming with `COMMIT;` or aborting with `ROLLBACK;`.
