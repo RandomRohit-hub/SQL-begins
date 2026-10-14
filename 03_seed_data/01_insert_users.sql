@@ -1,7 +1,7 @@
 -- ============================================================================
--- MODULE 03: DATA MANIPULATION LANGUAGE (DML) - SEED DATA
+-- MODULE 03: SEED DATA (DML)
 -- Script 01: Bulk Insert Users
--- Purpose: Populate the users table with realistic starter records.
+-- Purpose: Seed 30 realistic user records for queries, filters, and functions.
 -- ============================================================================
 
 USE startersql;
@@ -38,5 +38,5 @@ INSERT INTO users (name, email, gender, date_of_birth, salary) VALUES
 ('Khushi Bose', 'khushi.bose@example.com', 'Female', '2003-09-12', 39000.00),
 ('Pranav Khan', 'pranav.khan@example.com', 'Male', '2002-01-23', 61000.00);
 
--- Confirm inserted record count
-SELECT COUNT(*) AS total_users_seeded FROM users;
+-- Verify total seeded rows
+SELECT COUNT(*) AS total_users FROM users;

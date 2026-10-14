@@ -1,12 +1,12 @@
 -- ============================================================================
 -- MODULE 06: BUILT-IN FUNCTIONS
--- Script 02: Scalar & String Functions
--- Purpose: Transform individual column values (LOWER, UPPER, CONCAT, LENGTH, DATE).
+-- Script 02: String & Scalar Functions
+-- Purpose: Transform column values (LOWER, UPPER, CONCAT, LENGTH, SUBSTRING, DATES).
 -- ============================================================================
 
 USE startersql;
 
--- 1. String case conversion (LOWER, UPPER)
+-- 1. String Case Conversion: LOWER() and UPPER()
 SELECT 
     name,
     LOWER(name) AS lower_name,
@@ -14,8 +14,8 @@ SELECT
 FROM users 
 LIMIT 5;
 
--- 2. String Concatenation: Combine fields or literals (CONCAT)
--- Generate a simulated username by combining lowercase name and suffix
+-- 2. String Concatenation: CONCAT()
+-- Build custom usernames or formatted strings
 SELECT 
     id,
     name,
@@ -24,22 +24,22 @@ SELECT
 FROM users 
 LIMIT 5;
 
--- 3. String Length (LENGTH / CHAR_LENGTH)
+-- 3. String Length: LENGTH()
 SELECT 
     name,
-    LENGTH(name) AS character_length
+    LENGTH(name) AS char_length
 FROM users
 ORDER BY LENGTH(name) DESC
 LIMIT 5;
 
--- 4. Substrings: Extract a portion of text (SUBSTRING(string, start_pos, length))
+-- 4. Substring Extraction: SUBSTRING(text, start, length)
 SELECT 
     email,
     SUBSTRING(email, 1, 5) AS email_prefix
 FROM users
 LIMIT 5;
 
--- 5. Date functions: Extract date parts and calculate age
+-- 5. Date & Time Functions: YEAR() and TIMESTAMPDIFF()
 SELECT 
     name,
     date_of_birth,

@@ -1,7 +1,7 @@
 -- ============================================================================
 -- MODULE 01: DATA DEFINITION LANGUAGE (DDL)
--- Script 03: Alter Tables
--- Purpose: Modify existing table structures (add columns, change types, rename).
+-- Script 02: Alter Tables
+-- Purpose: Modify table schemas without losing existing data (ADD, MODIFY, DROP).
 -- ============================================================================
 
 USE startersql;
@@ -9,15 +9,16 @@ USE startersql;
 -- 1. Add a new column with a default value
 ALTER TABLE users ADD COLUMN is_active BOOLEAN DEFAULT TRUE;
 
--- 2. Modify an existing column's datatype length
+-- 2. Modify an existing column's data type or constraint length
 ALTER TABLE users MODIFY COLUMN name VARCHAR(150) NOT NULL;
 
--- 3. Add an index for faster lookup queries (e.g. searching by city)
-ALTER TABLE addresses ADD INDEX idx_city (city);
+-- 3. Add an index to improve search speed on frequently queried columns
+ALTER TABLE address ADD INDEX idx_city (city);
 
--- 4. Example: How to drop a column if no longer needed (commented for safety)
+-- 4. Syntax Example: Drop a column (commented out for safety)
 -- ALTER TABLE users DROP COLUMN is_active;
 
--- 5. View table structure after alterations
+-- 5. Inspect updated table structures
 DESCRIBE users;
-DESCRIBE addresses;
+DESCRIBE address;
+DESCRIBE admin_user;

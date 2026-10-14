@@ -1,14 +1,15 @@
 -- ============================================================================
 -- MODULE 01: DATA DEFINITION LANGUAGE (DDL)
--- Script 02: Create Tables
--- Purpose: Create relational tables with primary keys, datatypes, and foreign keys.
+-- Script 01: Create Database & Core Tables
+-- Purpose: Setup database and relational entities (users, address, admin_user).
 -- ============================================================================
 
+CREATE DATABASE IF NOT EXISTS startersql;
 USE startersql;
 
 -- ----------------------------------------------------------------------------
--- Table 1: users (Primary Entity)
--- Stores personal details, salary, and system timestamps.
+-- 1. Table: users (Primary Entity)
+-- Stores customer/user personal details, salary, and creation timestamps.
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -21,10 +22,10 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 -- ----------------------------------------------------------------------------
--- Table 2: addresses (Relational Child Entity)
--- Relates to users(id) with cascading delete support.
+-- 2. Table: address (Child Relational Entity)
+-- Links to users(id). If a user is deleted, their address is auto-deleted.
 -- ----------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS addresses (
+CREATE TABLE IF NOT EXISTS address (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     street VARCHAR(255),
@@ -38,18 +39,15 @@ CREATE TABLE IF NOT EXISTS addresses (
 );
 
 -- ----------------------------------------------------------------------------
--- Table 3: usersDB (Sandbox Table in secondary database)
+-- 3. Table: admin_user (Staff/Admin Entity for Joins & Set Operations)
+-- Represents administrator accounts used for UNION and comparison queries.
 -- ----------------------------------------------------------------------------
-USE Rohitsql;
-
-CREATE TABLE IF NOT EXISTS usersDB (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS admin_user (
+    id INT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     gender ENUM('Male', 'Female', 'Other'),
     date_of_birth DATE,
+    salary INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
--- Switch context back to primary database
-USE startersql;
