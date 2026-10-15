@@ -15,7 +15,10 @@ ALTER TABLE users MODIFY COLUMN name VARCHAR(150) NOT NULL;
 -- 3. Add an index to improve search speed on frequently queried columns
 ALTER TABLE address ADD INDEX idx_city (city);
 
--- 4. Syntax Example: Drop a column (commented out for safety)
+-- 4. Add self-referencing referral tracking column
+ALTER TABLE users ADD COLUMN referred_by_id INT;
+
+-- 5. Syntax Example: Drop a column (commented out for safety)
 -- ALTER TABLE users DROP COLUMN is_active;
 
 -- 5. Inspect updated table structures
